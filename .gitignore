@@ -1,0 +1,11 @@
+*.toml
+*.lock
+.replit
+
+*.py[cod]
+__pycache__
+
+.vscode
+.idea
+
+
