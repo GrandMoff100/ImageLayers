@@ -7,6 +7,8 @@ There are a variety of ways to install this project.
 ### From [Github](https://github.com/GrandMoff100/ImageLayers)
 ```
 $ git clone https://github.com/GrandMoff100/ImageLayers
+$ cd ImageLayers
+$ python setup.py install
 ```
 
 ### From [PyPI](https://pypi.org/project/imagelayers)
