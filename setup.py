@@ -7,9 +7,9 @@ with open('README.md', 'r') as f:
 
 setup(
     name='ImageLayers',
-    version='0.0.0',
+    version='0.2.1',
     packages=['imagelayers'],
-    install_requires=['python-pillow'],
+    install_requires=['pillow'],
     description='Split and process image segments and layers.',
     long_description=read,
     long_description_content_type='text/markdown',

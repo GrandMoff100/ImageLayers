@@ -2,8 +2,21 @@ from PIL import Image, ImageDraw
 from collections import defaultdict
 import copy
 
-from .util import coordgen
+from .util import coordgen, nested_int_loop
 
+
+def get_target_color(img):
+    colorset = img.colorset()
+    if img.image.format.upper() == 'JPEG':
+        for i in range(256):
+            if i not in colorset:
+                return i
+        return 0
+    if img.image.format.upper() == 'PNG':
+        for color in nested_int_loop([256] * len(img.load()[0,0])):
+            if color not in colorset:
+                return color
+        return [0] * len(img.load()[0,0])
 
 class ImageLayer:
     def __init__(self, image, pixelcoords=[], color=(0,0,0,255)):
@@ -123,15 +136,15 @@ class LayeredImage:
 
     def layersbyedge(self):
         orig = self.image.copy()
+        target_color = get_target_color(self)
         px = orig.load()
-
         pixels = set()
         for x in range(orig.width):
             for y in range(orig.height):
                 if (x,y) in pixels:
                     continue
-                ImageDraw.floodfill(orig, xy=(x,y), value=(0,0,0,0))
-                group = filter(lambda x: px[x] == (0,0,0,0), coordgen(*orig.size))
+                ImageDraw.floodfill(orig, xy=(x,y), value=target_color)
+                group = filter(lambda x: px[x] == target_color, coordgen(*orig.size))
                 layer = ImageLayer(self.image, group, color=(255,255,255,255))
                 del group
                 for pixel in layer.pxcs:
